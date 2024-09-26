@@ -28,3 +28,13 @@ Below is the paramaters for each component of ChaCha20 and serpent in the model.
 |-------------|-----------------------|----------------------|-------------------|
 | ChaCha20    | 256 bits (32 bytes)   | 64 bytes (512 bits)  | 20 rounds         |
 | Serpent     | 256 bits (32 bytes)   | 16 bytes (128 bits)  | 32 rounds         |
+
+## Components
+| Component             | Description                                      |
+|-----------------------|--------------------------------------------------|
+| **Input Layer**       | Plaintext input from a file                      |
+| **Key Generation**    | 256-bit key for Serpent; 8-byte nonce           |
+| **ChaCha20**          | Stream cipher for keystream generation           |
+| **Serpent**           | Block cipher for encrypting 128-bit blocks      |
+| **Hybrid Encryption**  | Combines both ciphers to encrypt plaintext       |
+| **Decryption**        | Reverses the encryption process using the same keys and nonce |
