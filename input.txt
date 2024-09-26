@@ -1,0 +1,6 @@
+This is a sample text for the hybrid encryption/decryption system
+It combines both features from chacha20 and serpent
+allowing for a combination of both stream and block cipher 
+it outputs the stream ciphertext as well as the block ciphertext
+then once decrypted it checks the decryption to the original plaintext
+ensuring if ur output is correct or not 
