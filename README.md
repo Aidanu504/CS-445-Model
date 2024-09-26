@@ -19,3 +19,12 @@ python model.py
 - encrypted.bin: Contains the encrypted data
 - decrypted.txt: Contains the decrypted plaintext
 - The Console also provides stream and block cipher text
+
+## Model details
+This model combines features from both ChaCha20 and Serpent.
+Below is the paramaters for each component of ChaCha20 and serpent in the model.
+
+| Cipher Type | Key Size              | Block Size           | Rounds            |
+|-------------|-----------------------|----------------------|-------------------|
+| ChaCha20    | 256 bits (32 bytes)   | 64 bytes (512 bits)  | 20 rounds         |
+| Serpent     | 256 bits (32 bytes)   | 16 bytes (128 bits)  | 32 rounds         |
