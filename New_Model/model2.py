@@ -1,4 +1,13 @@
 import os
+from faker import Faker
+
+fake = Faker()
+
+# Function to generate faker text and write to a file
+def generate_faker(filename, num_paragraphs):
+    with open(filename, 'w') as f:
+        for _ in range(num_paragraphs):
+            f.write(fake.paragraph())
 
 # encyrption s box
 # Very simple implementation
@@ -108,6 +117,8 @@ def verify_files(plaintext_file, decrypted_file):
             print("Fail - The decrypted text does NOT match the original plaintext")
 
 if __name__ == "__main__":
+    generate_faker('plaintext.txt', num_paragraphs=3)
+
     block_key = [0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88]  # Example 128-bit key for block cipher
     stream_key = [0x9A, 0xBC, 0xDE, 0xF0]  
     rounds = 16  
