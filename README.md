@@ -3,10 +3,10 @@ This is a model created for CS 445. This model combines features from both ChaCh
 
 ## Requirements
 - Python
-- The `Lorem` library for plaintext generation. You can install it via:
+- The `Faker` library for plaintext generation. You can install it via:
 
 ```
-pip install lorem
+pip install faker
 ```
 
 ## Usage
