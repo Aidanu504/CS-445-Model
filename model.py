@@ -2,6 +2,7 @@ import os
 import struct
 from colorama import Fore, Style
 from typing import Tuple
+import time 
 
 BLOCK_SIZE = 16
 SERPENT_NUM_ROUNDS = 32
@@ -93,7 +94,7 @@ def display_results(plaintext, stream_ciphertext, block_ciphertext, decrypted_te
 
 if __name__ == "__main__":
     key = b"1234567890abcdef1234567890abcdef" # key for serpent 
-    nonce = os.urandom(8) # random
+    nonce = os.urandom(8) # random 
     input_file = 'input.txt'
     encrypted_file = 'encrypted.bin'
     decrypted_file = 'decrypted.txt'
@@ -112,3 +113,14 @@ if __name__ == "__main__":
         out_f.write(decrypted_text)
 
     display_results(plaintext, stream_ciphertext, block_ciphertext, decrypted_text)
+
+    # times for analysis 
+    start_time = time.time()
+    stream_ciphertext, block_ciphertext = hybrid_encrypt(plaintext, key, nonce)
+    encryption_time = time.time() - start_time
+    print(f"Encryption Time: {encryption_time} seconds")
+
+    start_time = time.time()
+    decrypted_text = hybrid_decrypt(block_ciphertext, key, nonce)
+    decryption_time = time.time() - start_time
+    print(f"Decryption Time: {decryption_time} seconds")
