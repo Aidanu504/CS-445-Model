@@ -3,10 +3,10 @@ This is a model created for CS 445. This model combines features from both ChaCh
 
 ## Requirements
 - Python
-- The `colorama` library for colored console output. You can install it via:
+- The `Lorem` library for plaintext generation. You can install it via:
 
 ```
-pip install colorama
+pip install lorem
 ```
 
 ## Usage
