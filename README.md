@@ -10,15 +10,16 @@ pip install colorama
 ```
 
 ## Usage
-1. Prepare the input.txt file with the text u want to encrypt/decrypt
-2. Execute the script with:
+1. CD into New_Model folder
+2. Prepare the plaintext.txt file with the text u want to encrypt/decrypt
+3. Execute the script with:
 ```
-python model.py
+python model2.py
 ```
 3. Analyze outputs
-- encrypted.bin: Contains the encrypted data
-- decrypted.txt: Contains the decrypted plaintext
-- The Console also provides stream and block cipher text
+- ciphertext_combined.txt: Contains the encrypted data
+- decrypted_combined.txt: Contains the decrypted plaintext
+- The Console also provides block cipher text for each block and the final cipher text once stream cipher is done 
 
 ## Model details
 This model combines features from both ChaCha20 and Serpent.
