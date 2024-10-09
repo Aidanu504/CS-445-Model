@@ -1,5 +1,6 @@
 import os
 from faker import Faker
+import time  # Importing the time module
 
 fake = Faker()
 
@@ -7,7 +8,7 @@ fake = Faker()
 def generate_faker(filename, num_paragraphs):
     with open(filename, 'w') as f:
         for _ in range(num_paragraphs):
-            f.write(fake.paragraph())
+            f.write(fake.paragraph() + '\n')
 
 # encyrption s box
 # Very simple implementation
@@ -64,7 +65,9 @@ def stream_cipher(data, key):
 def encrypt_combined(input_file, output_file, block_key, stream_key, rounds):
     with open(input_file, 'rb') as f_in, open(output_file, 'wb') as f_out:
         original_text = f_in.read()
-        print(f"Original Text: {original_text}")
+        
+        # Start timing encryption
+        start_time = time.time()
 
         # Block Cipher Encryption
         round_keys = generate_round_keys(block_key, rounds)
@@ -74,17 +77,23 @@ def encrypt_combined(input_file, output_file, block_key, stream_key, rounds):
             block = list(original_text[i:i + 16]) + [0] * (16 - (len(original_text[i:i + 16]))) 
             encrypted_block = encrypt_block(block, round_keys, rounds)
             encrypted_blocks.extend(bytes(encrypted_block))
-            print(f"Block Cipher Text: {''.join(f'{x:02x}' for x in encrypted_block)}")
 
         # Stream Cipher Encryption
         final_encrypted_data = stream_cipher(encrypted_blocks, stream_key)
         f_out.write(final_encrypted_data)
-        print(f"Cipher Text (Combined): {''.join(f'{x:02x}' for x in final_encrypted_data)}")  
+
+        # End timing encryption
+        end_time = time.time()
+        encryption_time = end_time - start_time
+        return encryption_time  # Return the time taken
 
 # Combined decryption function
 def decrypt_combined(input_file, output_file, block_key, stream_key, rounds):
     with open(input_file, 'rb') as f_in, open(output_file, 'wb') as f_out:
         encrypted_data = f_in.read()
+
+        # Start timing decryption
+        start_time = time.time()
 
         # Stream Cipher Decryption
         decrypted_data = stream_cipher(encrypted_data, stream_key)
@@ -99,7 +108,11 @@ def decrypt_combined(input_file, output_file, block_key, stream_key, rounds):
             decrypted_blocks.extend(bytes(decrypted_block).rstrip(b'\x00'))  
         
         f_out.write(decrypted_blocks)
-        print(f"Decrypted Text: {decrypted_blocks.decode(errors='ignore')}")  
+
+        # End timing decryption
+        end_time = time.time()
+        decryption_time = end_time - start_time
+        return decryption_time  # Return the time taken
 
 # Verification
 def verify_files(plaintext_file, decrypted_file):
@@ -112,13 +125,34 @@ def verify_files(plaintext_file, decrypted_file):
             print("Fail - The decrypted text does NOT match the original plaintext")
 
 if __name__ == "__main__":
-    generate_faker('plaintext.txt', num_paragraphs=3)
-
     block_key = [0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88]  # Example 128-bit key for block cipher
     stream_key = [0x9A, 0xBC, 0xDE, 0xF0]  
     rounds = 16  
 
-    encrypt_combined('plaintext.txt', 'ciphertext_combined.txt', block_key, stream_key, rounds)
-    decrypt_combined('ciphertext_combined.txt', 'decrypted_combined.txt', block_key, stream_key, rounds)
+    encryption_times = []
+    decryption_times = []
 
-    verify_files('plaintext.txt', 'decrypted_combined.txt')
+    # Test with different sets of data
+    for num_paragraphs in range(1, 11):  # Generate files with 1 to 10 paragraphs
+        input_file = f'plaintext_{num_paragraphs}.txt'
+        generate_faker(input_file, num_paragraphs)  # Generate the faker data
+
+        # Encrypt and measure time
+        cipher_file = f'ciphertext_combined_{num_paragraphs}.txt'
+        encryption_time = encrypt_combined(input_file, cipher_file, block_key, stream_key, rounds)
+        encryption_times.append(encryption_time)
+
+        # Decrypt and measure time
+        decrypted_file = f'decrypted_combined_{num_paragraphs}.txt'
+        decryption_time = decrypt_combined(cipher_file, decrypted_file, block_key, stream_key, rounds)
+        decryption_times.append(decryption_time)
+
+        # Verify that decryption matches the original plaintext
+        verify_files(input_file, decrypted_file)
+
+    # Calculate average times
+    average_encryption_time = sum(encryption_times) / len(encryption_times)
+    average_decryption_time = sum(decryption_times) / len(decryption_times)
+
+    print(f"Average Encryption Time for 1 to 10 paragraphs: {average_encryption_time:.6f} seconds")
+    print(f"Average Decryption Time for 1 to 10 paragraphs: {average_decryption_time:.6f} seconds")
