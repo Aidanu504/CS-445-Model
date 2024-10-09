@@ -47,3 +47,10 @@ Below is the paramaters for each component of ChaCha20 and serpent in the model.
 | **Combined Decryption**     | Decrypts using the stream cipher first, followed by the block cipher             |
 | **Verification**           | Compares the original plaintext with the decrypted text to ensure correctness     |
 
+## Results
+We were able to successuly encrypt and decrypt data utlizing both the stream and block cipher.
+Below is an image of an example output:
+![result](readme_images/example.png)
+
+We also tested the times. Below is an example of this testing. It resulted in ~9 percentage difference between encryption and decryption. 
+![time](readme_images/time.png)
