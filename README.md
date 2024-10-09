@@ -25,17 +25,25 @@ python model2.py
 This model combines features from both ChaCha20 and Serpent.
 Below is the paramaters for each component of ChaCha20 and serpent in the model.
 
-| Cipher Type | Key Size              | Block Size           | Rounds            |
-|-------------|-----------------------|----------------------|-------------------|
-| ChaCha20    | 256 bits (32 bytes)   | 64 bytes (512 bits)  | 20 rounds         |
-| Serpent     | 256 bits (32 bytes)   | 16 bytes (128 bits)  | 32 rounds         |
+| Parameter                          | Description                                           |
+|------------------------------------|-------------------------------------------------------|
+| **Block Cipher Key Size**          | 128 bits (16 bytes)                                  |
+| **Stream Cipher Key Size**         | 32 bits (4 bytes)                                   |
+| **Block Size**                     | 16 bytes (128 bits)                                 |
+| **Rounds in Block Cipher**         | 16 rounds                                           |
+
 
 ## Components
-| Component             | Description                                      |
-|-----------------------|--------------------------------------------------|
-| **Input Layer**       | Plaintext input from a file                      |
-| **Key Generation**    | 256-bit key for Serpent; 8-byte nonce           |
-| **ChaCha20**          | Stream cipher for keystream generation           |
-| **Serpent**           | Block cipher for encrypting 128-bit blocks      |
-| **Hybrid Encryption**  | Combines both ciphers to encrypt plaintext       |
-| **Decryption**        | Reverses the encryption process using the same keys and nonce |
+| Component                  | Description                                                                       |
+|----------------------------|-----------------------------------------------------------------------------------|
+| **Input Layer**            | Reads plaintext input from a file                                                |
+| **Key Generation**         | Generates round keys for the block cipher using a simple key schedule            |
+| **S-box Substitution**     | Substitutes block values using a simple S-box operation                         |
+| **Rotation Functions**      | Rotates bits left (for encryption) and right (for decryption) in each round      |
+| **Block Encryption**        | Encrypts 16-byte blocks using the block cipher with multiple rounds              |
+| **Block Decryption**        | Decrypts 16-byte blocks using the same round keys in reverse order               |
+| **Stream Cipher**          | Encrypts/decrypts data using XOR with a stream key                               |
+| **Combined Encryption**     | Encrypts plaintext using the block cipher followed by the stream cipher           |
+| **Combined Decryption**     | Decrypts using the stream cipher first, followed by the block cipher             |
+| **Verification**           | Compares the original plaintext with the decrypted text to ensure correctness     |
+
