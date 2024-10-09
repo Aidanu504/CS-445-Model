@@ -22,7 +22,7 @@ python model2.py
 - The Console also provides block cipher text for each block and the final cipher text once stream cipher is done 
 
 ## Model details
-This model combines features from both ChaCha20 and Serpent.
+This model combines simplified features from both ChaCha20 and Serpent.
 Below is the paramaters for each component of ChaCha20 and serpent in the model.
 
 | Parameter                          | Description                                           |
